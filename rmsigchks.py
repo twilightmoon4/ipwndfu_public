@@ -16,7 +16,7 @@ class DeviceConfig:
         self.patches = patches
 
 def all_exploit_configs():
-    s5l8960x_patches = {
+    s5l8965x_patches = {
         0x1000054e4: "\x1f\x20\x03\xd5",
         0x1000054b4: b"".join([
             b"\x21\x00\x80\x52", # mov w1, 1
@@ -40,7 +40,7 @@ def all_exploit_configs():
     }
 
     return [
-        DeviceConfig("iBoot-1704.10", 0x8960, s5l8960x_patches),
+        DeviceConfig("iBoot-1704.10", 0x8960, s5l8965x_patches),
         DeviceConfig("iBoot-3135.0.0.2.3", 0x8011, t8011_patches),
     ]
 
