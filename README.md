@@ -1,6 +1,7 @@
 ![](repo/ipwndfu.png)
 # Open-source jailbreaking tool for many iOS devices
 
+Port Totally to Linux for @twilightmoon4
 
 **Read [disclaimer](#disclaimer) before using this software.*
 
@@ -33,13 +34,15 @@
 
 1. Use a cable to connect device to your Mac. Hold buttons as needed to enter DFU Mode.
 
-2. First run ```./ipwndfu -p``` to exploit the device. Repeat the process if it fails, it is not reliable.
+2. First run ```chmod +x ipwndfu``` to exploit be executable
 
-3. Run ```./ipwndfu --dump-rom``` to get a dump of SecureROM.
+3. Run ```./ipwndfu -p``` to exploit the device. Repeat the process if it fails, it is not reliable.
 
-4. Run ```./ipwndfu --decrypt-gid KEYBAG``` to decrypt a keybag.
+4. Run ```./ipwndfu --dump-rom``` to get a dump of SecureROM.
 
-5. Run ```./ipwndfu --demote``` to demote device and enable JTAG.
+5. Run ```./ipwndfu --decrypt-gid KEYBAG``` to decrypt a keybag.
+
+6. Run ```./ipwndfu --demote``` to demote device and enable JTAG.
 
 
 ## Features
